@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Che Alyssa Zulaik COMP 272-002
  *
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
@@ -37,13 +37,22 @@ public class ProblemSolutions {
         int n = values.length;
 
         for (int i = 0; i < n - 1; i++) {
-
-            // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
-            // "SELECTION SORT" ALGORITHM.
-            // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
-
+            int selectedIdx = i;
+            for (int j = i + 1; j < n; j++){
+                if (ascending){ // lowest to largest
+                    if (values[j] < values[selectedIdx]){
+                        selectedIdx = j;
+                    }
+                } else { // largest to lowest
+                    if (values[j] > values[selectedIdx]) {
+                        selectedIdx = j;
+                    }
+                }
+            }
+            int temp = values[i];
+            values[i] = values[selectedIdx];
+            values[selectedIdx] = temp;
         }
-
     } // End class selectionSort
 
 
