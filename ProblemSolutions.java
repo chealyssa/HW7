@@ -101,18 +101,55 @@ public class ProblemSolutions {
 
     private void mergeDivisbleByKFirst(int arr[], int k, int left, int mid, int right)
     {
-        // YOUR CODE GOES HERE, THIS METHOD IS NO MORE THAN THE STANDARD MERGE PORTION
-        // OF A MERGESORT, EXCEPT THE NUMBERS DIVISIBLE BY K MUST GO FIRST WITHIN THE
-        // SEQUENCE PER THE DISCUSSION IN THE PROLOGUE ABOVE.
-        //
-        // NOTE: YOU CAN PROGRAM THIS WITH A SPACE COMPLEXITY OF O(1) OR O(N LOG N).
-        // AGAIN, THIS IS REFERRING TO SPACE COMPLEXITY. O(1) IS IN-PLACE, O(N LOG N)
-        // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
-        // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
-        // OF THIS PROGRAMMING EXERCISES.
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        int L[] = new int[n1];
+        int R[] = new int[n2];
 
-        return;
+        // Copy elements into temp
+        for (int i = 0; i < n1; ++i) {
+            L[i] = arr[left + i];
+        }
+        for (int j = 0; j < n2; ++j) {
+            R[j] = arr[mid + 1 + j];
+        }
 
+        int i = 0, j = 0;
+        int kIdx = left;
+
+        // First pass: Merge divisible-by-k maintain original order
+        while (i < n1 && j < n2) {
+            if (L[i] % k == 0 && R[j] % k != 0) {
+                arr[kIdx++] = L[i++];
+            } else if (R[j] % k == 0 && L[i] % k != 0) {
+                arr[kIdx++] = R[j++];
+            } else if (L[i] % k == 0 && R[j] % k == 0) {
+                arr[kIdx++] = L[i++];
+            } else {
+                // Merging non-divisible elements
+                if (L[i] <= R[j]) {
+                    arr[kIdx++] = L[i++];
+                } else {
+                    arr[kIdx++] = R[j++];
+                }
+            }
+        }
+
+        // Handle remaining divisible-by-k elements
+        while (i < n1 && L[i] % k == 0) {
+            arr[kIdx++] = L[i++];
+        }
+        while (j < n2 && R[j] % k == 0) {
+            arr[kIdx++] = R[j++];
+        }
+
+        // Merge remaining elements (non-divisible by k)
+        while (i < n1) {
+            arr[kIdx++] = L[i++];
+        }
+        while (j < n2) {
+            arr[kIdx++] = R[j++];
+        }
     }
 
 
@@ -162,11 +199,16 @@ public class ProblemSolutions {
      */
 
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        // ascending order
+        Arrays.sort(asteroids);
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
-
-        return false;
-
+        for (int asteroid : asteroids){
+            if(mass < asteroid){
+                return false;
+            }
+            mass += asteroid;
+        }
+        return true;
     }
 
 
@@ -201,9 +243,20 @@ public class ProblemSolutions {
 
     public static int numRescueSleds(int[] people, int limit) {
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        Arrays.sort(people);
 
-        return -1;
+        // initialized stuff
+        int left = 0, right = people.length - 1, sledCount = 0;
+
+        while(left <= right){
+            if (people[left] + people[right] <= limit){
+                // they share
+                left++;
+            }
+            right--; // right gets their own
+            sledCount++;
+        }
+        return sledCount;
 
     }
 
